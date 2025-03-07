@@ -1,0 +1,37 @@
+CREATE TABLE customers (
+             ...     customer_id UUID PRIMARY KEY,
+             ...     email TEXT,
+             ...     first_name TEXT,
+             ...     last_name TEXT,
+             ...     phone TEXT,
+             ...     city TEXT,
+             ...     total_orders INT,
+             ...     total_spent DECIMAL,
+             ...     created_at TIMESTAMP,
+                     password TEXT,
+                     admin INT,
+                     worker INT
+             ... );
+
+CREATE TABLE orders (
+    customer_id UUID,
+    order_id UUID,
+    products MAP<TEXT, INT>,
+    total_price DECIMAL,
+    discount DECIMAL,
+    payment_method TEXT,
+    delivery_method TEXT,
+    address TEXT,
+    status TEXT,
+    created_at TIMESTAMP,
+    PRIMARY KEY (order_id)
+);
+
+CREATE TABLE discounts (
+    discount_id UUID PRIMARY KEY,  -- Unique identifier for each discount
+    created_by UUID,               -- ID of the user who created the discount
+    discount_code TEXT,            -- The actual discount code
+    created_at TIMESTAMP,          -- Timestamp when the discount was created
+    discount_percentage INT,       -- Discount percentage (as an integer)
+    expires_at TIMESTAMP           -- Expiration date of the discount
+);
