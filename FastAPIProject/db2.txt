@@ -1,0 +1,71 @@
+CREATE TABLE customers (
+    customer_id UUID PRIMARY KEY,
+    email TEXT,
+    first_name TEXT,
+    last_name TEXT,
+    phone TEXT,
+    city TEXT,
+    total_orders INT,
+    total_spent DECIMAL,
+    created_at TIMESTAMP,
+    password TEXT,
+    admin INT,
+    worker INT
+);
+
+CREATE TABLE restaurants (
+    restaurant_id UUID PRIMARY KEY,
+    name TEXT,
+    longitude DECIMAL,
+    latitude DECIMAL,
+    address TEXT,
+    opening_hours MAP<TEXT, TEXT>,  -- JSON or TEXT format for opening hours
+    delivery_people MAP<UUID, TEXT>,  -- UUID of delivery person mapped to their name
+    created_at TIMESTAMP
+);
+
+CREATE TABLE delivery_people (
+    delivery_person_id UUID PRIMARY KEY,
+    name TEXT,
+    phone TEXT,
+    created_at TIMESTAMP
+);
+
+CREATE TABLE items (
+    item_id UUID PRIMARY KEY,   -- Unique item identifier
+    restaurant_id UUID,         -- Which restaurant this price applies to
+    name TEXT,                  -- Item name
+    description TEXT,            -- Optional description
+    price DECIMAL,              -- Price of the item at this restaurant
+    created_at TIMESTAMP        -- When the price was set
+);
+
+CREATE TABLE orders (
+    customer_id UUID,
+    order_id UUID,
+    restaurant_id UUID,  -- Tracks which restaurant fulfilled the order
+    products MAP<UUID, INT>,  -- Maps item_id to quantity
+    total_price DECIMAL,
+    discount DECIMAL,
+    payment_method TEXT,
+    delivery_method TEXT,
+    address TEXT,
+    status TEXT,
+    created_at TIMESTAMP,
+    delivery_person UUID,  -- Assigned delivery person's UUID
+    delivery_fee DECIMAL,
+    delivery_time TIMESTAMP,
+    estimated_delivery_time TIMESTAMP,
+    delivery_person_name TEXT,  -- Name of the delivery person
+    delivery_person_phone TEXT,  -- Phone number of the delivery person
+    PRIMARY KEY (order_id)
+);
+
+CREATE TABLE discounts (
+    discount_id UUID PRIMARY KEY,
+    created_by UUID,
+    discount_code TEXT,
+    created_at TIMESTAMP,
+    discount_percentage INT,
+    expires_at TIMESTAMP
+);

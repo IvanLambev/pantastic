@@ -1,17 +1,17 @@
 CREATE TABLE customers (
-             ...     customer_id UUID PRIMARY KEY,
-             ...     email TEXT,
-             ...     first_name TEXT,
-             ...     last_name TEXT,
-             ...     phone TEXT,
-             ...     city TEXT,
-             ...     total_orders INT,
-             ...     total_spent DECIMAL,
-             ...     created_at TIMESTAMP,
-                     password TEXT,
-                     admin INT,
-                     worker INT
-             ... );
+    customer_id UUID PRIMARY KEY,
+    email TEXT,
+    first_name TEXT,
+    last_name TEXT,
+    phone TEXT,
+    city TEXT,
+    total_orders INT,
+    total_spent DECIMAL,
+    created_at TIMESTAMP,
+    password TEXT,
+    admin INT,
+    worker INT,
+              );
 
 CREATE TABLE orders (
     customer_id UUID,
@@ -35,3 +35,4 @@ CREATE TABLE discounts (
     discount_percentage INT,       -- Discount percentage (as an integer)
     expires_at TIMESTAMP           -- Expiration date of the discount
 );
+

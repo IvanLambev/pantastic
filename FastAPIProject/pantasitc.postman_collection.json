@@ -1,0 +1,1183 @@
+{
+	"info": {
+		"_postman_id": "e4ba3f75-3e25-4298-bf84-726ccfb9639f",
+		"name": "pantasitc",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30322912"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "http://127.0.0.1:8000/register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"testuser@example.com\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"phone\": \"+1234567890\",\n    \"city\": \"New York\",\n    \"password\": \"securepassword\"\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/register",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"register"
+							]
+						},
+						"description": "Generated from cURL: curl --request POST \\\n  --url http://127.0.0.1:8000/register \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n    \"email\": \"testuser@example.com\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"phone\": \"+1234567890\",\n    \"city\": \"New York\",\n    \"password\": \"securepassword\"\n  }'"
+					},
+					"response": []
+				},
+				{
+					"name": "http://127.0.0.1:8000/login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"testuser@example.com\",\n    \"password\": \"securepassword\"\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/login",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"login"
+							]
+						},
+						"description": "Generated from cURL: curl --request POST \\\n  --url http://127.0.0.1:8000/login \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n    \"email\": \"testuser@example.com\",\n    \"password\": \"securepassword\"\n  }'"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/user/delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"example@email.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/user/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"user",
+								"delete"
+							]
+						},
+						"description": "Generated from cURL: \ncurl --location --request DELETE 'http://localhost:8000/user/delete' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"email\": \"example@email.com\"\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/profile/me",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer YOUR_ACCESS_TOKEN"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/profile/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"profile",
+								"me"
+							]
+						},
+						"description": "Generated from cURL: curl -X GET http://localhost:8000/profile/me \\\r\n-H \"Authorization: Bearer YOUR_ACCESS_TOKEN\""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "restaurants",
+			"item": [
+				{
+					"name": "http://127.0.0.1:8002/restaurants",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer <your_token>"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Pizza Palace\",\n    \"address\": \"123 Main Street, Springfield\",\n    \"opening_hours\": {\n        \"Monday\": \"9:00-18:00\",\n        \"Tuesday\": \"9:00-18:00\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/restaurants",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"restaurants"
+							]
+						},
+						"description": "Generated from cURL: curl -X POST \"http://127.0.0.1:8000/restaurants\" \\\n-H \"Content-Type: application/json\" \\\n-H \"Authorization: Bearer <your_token>\" \\\n-d '{\n    \"name\": \"Pizza Palace\",\n    \"address\": \"123 Main Street, Springfield\",\n    \"opening_hours\": {\n        \"Monday\": \"9:00-18:00\",\n        \"Tuesday\": \"9:00-18:00\"\n    }\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "http://127.0.0.1:8002/restaurants",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <your_token>"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/restaurants",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"restaurants"
+							]
+						},
+						"description": "Generated from cURL: curl -X GET \"http://127.0.0.1:8000/restaurants\" \\\r\n-H \"Authorization: Bearer <your_token>\""
+					},
+					"response": []
+				},
+				{
+					"name": "http://127.0.0.1:8002/restaurants",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ZTJiZWNhMS0wYTMwLTQ5YTItOTA0Yi1iZmFmYzU4MzI4ZGEiLCJleHAiOjE3NDM0Mzc3ODh9.Z0fOKKds0U5_1Srr5wouUcCWISpYIhRy7y3bQC9A6JB"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"restaurant_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"restaurant\": {\n        \"name\": \"Updated Pizza Palace\",\n        \"address\": \"456 Elm Street, Springfield\",\n        \"opening_hours\": {\n            \"Monday\": \"10:00-20:00\",\n            \"Tuesday\": \"10:00-20:00\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8002/restaurants",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8002",
+							"path": [
+								"restaurants"
+							]
+						},
+						"description": "Generated from cURL: curl -X PUT \"http://127.0.0.1:8000/restaurants\" \\\n-H \"Content-Type: application/json\" \\\n-H \"Authorization: Bearer <your_token>\" \\\n-d '{\n    \"restaurant_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"name\": \"Updated Pizza Palace\",\n    \"address\": \"456 Elm Street, Springfield\",\n    \"opening_hours\": {\n        \"Monday\": \"10:00-20:00\",\n        \"Tuesday\": \"10:00-20:00\"\n    }\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "http://127.0.0.1:8002/restaurants",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer <your_token>"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"restaurant_id\": \"123e4567-e89b-12d3-a456-426614174000\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/restaurants",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"restaurants"
+							]
+						},
+						"description": "Generated from cURL: curl -X DELETE \"http://127.0.0.1:8000/restaurants\" \\\r\n-H \"Content-Type: application/json\" \\\r\n-H \"Authorization: Bearer <your_token>\" \\\r\n-d '{\r\n    \"restaurant_id\": \"123e4567-e89b-12d3-a456-426614174000\"\r\n}'"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "delivery-people",
+			"item": [
+				{
+					"name": "http://127.0.0.1:8002/delivery-people",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer <your_token>"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"John Doe\",\r\n    \"phone\": \"555-1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/delivery-people",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"delivery-people"
+							]
+						},
+						"description": "Generated from cURL: curl -X POST \"http://127.0.0.1:8000/delivery-people\" \\\r\n-H \"Content-Type: application/json\" \\\r\n-H \"Authorization: Bearer <your_token>\" \\\r\n-d '{\r\n    \"name\": \"John Doe\",\r\n    \"phone\": \"555-1234\"\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "http://127.0.0.1:8002/delivery-people Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ZTJiZWNhMS0wYTMwLTQ5YTItOTA0Yi1iZmFmYzU4MzI4ZGEiLCJleHAiOjE3NDM0OTE4NzR9.vlCKgThXkaj9I-Vpp2sgeXTRaCKT0dmWBHmk4ESBDc4"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"restaurant_id\": \"ac3aa580-a30d-49aa-8707-30c4006ab38a\",\r\n    \"delivery_person_id\": \"34055fe2-3b5d-4dcb-8e2d-984954ab56ba\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8002/assign-delivery-person",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8002",
+							"path": [
+								"assign-delivery-person"
+							]
+						},
+						"description": "Generated from cURL: curl -X POST \"http://127.0.0.1:8000/delivery-people\" \\\r\n-H \"Content-Type: application/json\" \\\r\n-H \"Authorization: Bearer <your_token>\" \\\r\n-d '{\r\n    \"name\": \"John Doe\",\r\n    \"phone\": \"555-1234\"\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "http://127.0.0.1:8002/delivery-people Copy 2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ZTJiZWNhMS0wYTMwLTQ5YTItOTA0Yi1iZmFmYzU4MzI4ZGEiLCJleHAiOjE3NDM0OTE4NzR9.vlCKgThXkaj9I-Vpp2sgeXTRaCKT0dmWBHmk4ESBDc4"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"restaurant_id\": \"ac3aa580-a30d-49aa-8707-30c4006ab38a\",\r\n    \"delivery_person_id\": \"34055fe2-3b5d-4dcb-8e2d-984954ab56ba\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8002/assign-delivery-person",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8002",
+							"path": [
+								"assign-delivery-person"
+							]
+						},
+						"description": "Generated from cURL: curl -X POST \"http://127.0.0.1:8000/delivery-people\" \\\r\n-H \"Content-Type: application/json\" \\\r\n-H \"Authorization: Bearer <your_token>\" \\\r\n-d '{\r\n    \"name\": \"John Doe\",\r\n    \"phone\": \"555-1234\"\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "http://127.0.0.1:8002/delivery-people",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer <your_token>"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"delivery_person_id\": \"123e4567-e89b-12d3-a456-426614174000\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/delivery-people",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"delivery-people"
+							]
+						},
+						"description": "Generated from cURL: curl -X DELETE \"http://127.0.0.1:8000/delivery-people\" \\\r\n-H \"Content-Type: application/json\" \\\r\n-H \"Authorization: Bearer <your_token>\" \\\r\n-d '{\r\n    \"delivery_person_id\": \"123e4567-e89b-12d3-a456-426614174000\"\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "http://127.0.0.1:8002/delivery-people Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer <your_token>"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"delivery_person_id\": \"123e4567-e89b-12d3-a456-426614174000\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/delivery-people",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"delivery-people"
+							]
+						},
+						"description": "Generated from cURL: curl -X DELETE \"http://127.0.0.1:8000/delivery-people\" \\\r\n-H \"Content-Type: application/json\" \\\r\n-H \"Authorization: Bearer <your_token>\" \\\r\n-d '{\r\n    \"delivery_person_id\": \"123e4567-e89b-12d3-a456-426614174000\"\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "http://127.0.0.1:8002/restaurants Copy",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ZTJiZWNhMS0wYTMwLTQ5YTItOTA0Yi1iZmFmYzU4MzI4ZGEiLCJleHAiOjE3NDM0Mzc3ODh9.Z0fOKKds0U5_1Srr5wouUcCWISpYIhRy7y3bQC9A6JB"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"delivery_person_id\": \"34055fe2-3b5d-4dcb-8e2d-984954ab56ba\",\n    \"person\": {\n        \"name\": \"petur ivanov\",\n        \"phone\": \"0898123\"\n        \n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8002/delivery-people",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8002",
+							"path": [
+								"delivery-people"
+							]
+						},
+						"description": "Generated from cURL: curl -X PUT \"http://127.0.0.1:8000/restaurants\" \\\n-H \"Content-Type: application/json\" \\\n-H \"Authorization: Bearer <your_token>\" \\\n-d '{\n    \"restaurant_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"name\": \"Updated Pizza Palace\",\n    \"address\": \"456 Elm Street, Springfield\",\n    \"opening_hours\": {\n        \"Monday\": \"10:00-20:00\",\n        \"Tuesday\": \"10:00-20:00\"\n    }\n}'"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "orders",
+			"item": [
+				{
+					"name": "http://localhost:8000/add_to_cart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <YOUR_TOKEN>"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"product_id\": \"product123\",\r\n    \"quantity\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/add_to_cart",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"add_to_cart"
+							]
+						},
+						"description": "Generated from cURL: curl -X POST http://localhost:8000/add_to_cart \\\r\n-H \"Authorization: Bearer <YOUR_TOKEN>\" \\\r\n-H \"Content-Type: application/json\" \\\r\n-d '{\r\n    \"product_id\": \"product123\",\r\n    \"quantity\": 2\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/get_pending_orders",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <YOUR_TOKEN>"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/get_pending_orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get_pending_orders"
+							]
+						},
+						"description": "Generated from cURL: curl -X GET http://localhost:8000/get_pending_orders \\\r\n-H \"Authorization: Bearer <YOUR_TOKEN>\""
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/update_cart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <YOUR_TOKEN>"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"product_id\": \"product123\",\r\n    \"quantity\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/update_cart",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"update_cart"
+							]
+						},
+						"description": "Generated from cURL: curl -X POST http://localhost:8000/update_cart \\\r\n-H \"Authorization: Bearer <YOUR_TOKEN>\" \\\r\n-H \"Content-Type: application/json\" \\\r\n-d '{\r\n    \"product_id\": \"product123\",\r\n    \"quantity\": 1\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/remove_from_cart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <YOUR_TOKEN>"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"product_id\": \"product123\",\r\n    \"quantity\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/remove_from_cart",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"remove_from_cart"
+							]
+						},
+						"description": "Generated from cURL: curl -X POST http://localhost:8000/remove_from_cart \\\r\n-H \"Authorization: Bearer <YOUR_TOKEN>\" \\\r\n-H \"Content-Type: application/json\" \\\r\n-d '{\r\n    \"product_id\": \"product123\",\r\n    \"quantity\": 1\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/get_cart",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <YOUR_TOKEN>"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/get_cart",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get_cart"
+							]
+						},
+						"description": "Generated from cURL: curl -X GET http://localhost:8000/get_cart \\\r\n-H \"Authorization: Bearer <YOUR_TOKEN>\""
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/clear_cart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <YOUR_TOKEN>"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/clear_cart",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"clear_cart"
+							]
+						},
+						"description": "Generated from cURL: curl -X POST http://localhost:8000/clear_cart \\\r\n-H \"Authorization: Bearer <YOUR_TOKEN>\""
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/get_user_pending_orders",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <YOUR_TOKEN>"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/get_user_pending_orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get_user_pending_orders"
+							]
+						},
+						"description": "Generated from cURL: curl -X GET http://localhost:8000/get_user_pending_orders \\\r\n-H \"Authorization: Bearer <YOUR_TOKEN>\""
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/update_order_status",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <YOUR_TOKEN>"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"order_id\": \"550e8400-e29b-41d4-a716-446655440000\",\r\n    \"status\": \"prepared\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/update_order_status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"update_order_status"
+							]
+						},
+						"description": "Generated from cURL: curl -X POST http://localhost:8000/update_order_status \\\r\n-H \"Authorization: Bearer <YOUR_TOKEN>\" \\\r\n-H \"Content-Type: application/json\" \\\r\n-d '{\r\n    \"order_id\": \"550e8400-e29b-41d4-a716-446655440000\",\r\n    \"status\": \"prepared\"\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/get_prepared_orders",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <YOUR_TOKEN>"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/get_prepared_orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get_prepared_orders"
+							]
+						},
+						"description": "Generated from cURL: curl -X GET http://localhost:8000/get_prepared_orders \\\r\n-H \"Authorization: Bearer <YOUR_TOKEN>\""
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/get_user_prepared_orders",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <YOUR_TOKEN>"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/get_user_prepared_orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get_user_prepared_orders"
+							]
+						},
+						"description": "Generated from cURL: curl -X GET http://localhost:8000/get_user_prepared_orders \\\r\n-H \"Authorization: Bearer <YOUR_TOKEN>\""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "discounts",
+			"item": [
+				{
+					"name": "http://127.0.0.1:8001/create_discount",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {your_access_token}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"discount_code\": \"SUMMER2024\",\r\n    \"discount_percentage\": 20\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8001/create_discount",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8001",
+							"path": [
+								"create_discount"
+							]
+						},
+						"description": "Generated from cURL: curl -X POST \"http://127.0.0.1:8001/create_discount\" \\\r\n-H \"Authorization: Bearer {your_access_token}\" \\\r\n-H \"Content-Type: application/json\" \\\r\n-d '{\r\n    \"discount_code\": \"SUMMER2024\",\r\n    \"discount_percentage\": 20\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "http://127.0.0.1:8001/delete_discount_code",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {your_access_token}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"discount_code\": \"SUMMER2024\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8001/delete_discount_code",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8001",
+							"path": [
+								"delete_discount_code"
+							]
+						},
+						"description": "Generated from cURL: curl -X DELETE \"http://127.0.0.1:8001/delete_discount_code\" \\\r\n-H \"Authorization: Bearer {your_access_token}\" \\\r\n-H \"Content-Type: application/json\" \\\r\n-d '{\r\n    \"discount_code\": \"SUMMER2024\"\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "http://127.0.0.1:8001/apply_discounts?discount_code=SUMMER2024",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {your_access_token}"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8001/apply_discounts?discount_code=SUMMER2024",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8001",
+							"path": [
+								"apply_discounts"
+							],
+							"query": [
+								{
+									"key": "discount_code",
+									"value": "SUMMER2024"
+								}
+							]
+						},
+						"description": "Generated from cURL: curl -X GET \"http://127.0.0.1:8001/apply_discounts?discount_code=SUMMER2024\" \\\r\n-H \"Authorization: Bearer {your_access_token}\""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "items",
+			"item": [
+				{
+					"name": "http://127.0.0.1:8002/items",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ZTJiZWNhMS0wYTMwLTQ5YTItOTA0Yi1iZmFmYzU4MzI4ZGEiLCJleHAiOjE3NDM0OTM5ODl9.qOxDwHF2gvZGoMxi4G9LnBe-Hk6nbrwO624I0mEDx0M"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"restaurant_id\": \"ac3aa580-a30d-49aa-8707-30c4006ab38a\",\n    \"items\": [\n        {\n            \"name\": \"Pizza Margherita\",\n            \"description\": \"Classic pizza with tomato and mozzarella\",\n            \"price\": 8.99\n        },\n        {\n            \"name\": \"Spaghetti Carbonara\",\n            \"description\": \"Pasta with pancetta, egg, and cheese\",\n            \"price\": 12.50\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/items",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"items"
+							]
+						},
+						"description": "Generated from cURL: curl -X POST \"http://127.0.0.1:8000/items\" \\\n-H \"Content-Type: application/json\" \\\n-H \"Authorization: Bearer <your_token>\" \\\n-d '{\n    \"restaurant_id\": \"ac3aa580-a30d-49aa-8707-30c4006ab38a\",\n    \"items\": [\n        {\n            \"name\": \"Pizza Margherita\",\n            \"description\": \"Classic pizza with tomato and mozzarella\",\n            \"price\": 8.99\n        },\n        {\n            \"name\": \"Spaghetti Carbonara\",\n            \"description\": \"Pasta with pancetta, egg, and cheese\",\n            \"price\": 12.50\n        }\n    ]\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "http://127.0.0.1:8002/items/ac3aa580-a30d-49aa-8707-30c4006ab38a",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <your_token>"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/items/ac3aa580-a30d-49aa-8707-30c4006ab38a",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"items",
+								"ac3aa580-a30d-49aa-8707-30c4006ab38a"
+							]
+						},
+						"description": "Generated from cURL: curl -X GET \"http://127.0.0.1:8000/items/ac3aa580-a30d-49aa-8707-30c4006ab38a\" \\\r\n-H \"Authorization: Bearer <your_token>\""
+					},
+					"response": []
+				},
+				{
+					"name": "http://127.0.0.1:8002/items",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer <your_token>"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item_id\": \"34055fe2-3b5d-4dcb-8e2d-984954ab56ba\",\r\n    \"name\": \"Updated Pizza Margherita\",\r\n    \"price\": 9.99\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/items",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"items"
+							]
+						},
+						"description": "Generated from cURL: curl -X PUT \"http://127.0.0.1:8000/items\" \\\r\n-H \"Content-Type: application/json\" \\\r\n-H \"Authorization: Bearer <your_token>\" \\\r\n-d '{\r\n    \"item_id\": \"34055fe2-3b5d-4dcb-8e2d-984954ab56ba\",\r\n    \"name\": \"Updated Pizza Margherita\",\r\n    \"price\": 9.99\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "http://127.0.0.1:8002/items",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ZTJiZWNhMS0wYTMwLTQ5YTItOTA0Yi1iZmFmYzU4MzI4ZGEiLCJleHAiOjE3NDM0OTU4NTJ9.4VRW3uwcBbrPwmyLKQ9JgxMhUM8plUoZ0cGF6ArZgAU"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item_id\": \"dd81bd1f-c515-4111-9ac5-e742d60d1d9e\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/items",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"items"
+							]
+						},
+						"description": "Generated from cURL: curl -X DELETE \"http://127.0.0.1:8000/items\" \\\r\n-H \"Content-Type: application/json\" \\\r\n-H \"Authorization: Bearer <your_token>\" \\\r\n-d '{\r\n    \"item_id\": \"34055fe2-3b5d-4dcb-8e2d-984954ab56ba\"\r\n}'"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "http://127.0.0.1:8003/orders",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer <your_token>"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"restaurant_id\": \"ac3aa580-a30d-49aa-8707-30c4006ab38a\",\n    \"products\": {\n        \"34055fe2-3b5d-4dcb-8e2d-984954ab56ba\": 2,\n        \"123e4567-e89b-12d3-a456-426614174000\": 1\n    },\n    \"total_price\": 25.50,\n    \"payment_method\": \"credit_card\",\n    \"delivery_method\": \"delivery\",\n    \"address\": \"123 Main Street\",\n    \"estimated_delivery_time\": \"2025-04-01T15:30:00\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/orders",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"orders"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST \"http://127.0.0.1:8000/orders\" \\\n-H \"Content-Type: application/json\" \\\n-H \"Authorization: Bearer <your_token>\" \\\n-d '{\n    \"restaurant_id\": \"ac3aa580-a30d-49aa-8707-30c4006ab38a\",\n    \"products\": {\n        \"34055fe2-3b5d-4dcb-8e2d-984954ab56ba\": 2,\n        \"123e4567-e89b-12d3-a456-426614174000\": 1\n    },\n    \"total_price\": 25.50,\n    \"payment_method\": \"credit_card\",\n    \"delivery_method\": \"delivery\",\n    \"address\": \"123 Main Street\",\n    \"estimated_delivery_time\": \"2025-04-01T15:30:00\"\n}'"
+			},
+			"response": []
+		}
+	]
+}
