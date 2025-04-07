@@ -16,6 +16,10 @@ from typing import Dict, Optional, List
 
 from user_2 import get_current_user
 
+from geopy.geocoders import Nominatim
+from geopy.distance import geodesic
+from geopy.exc import GeocoderTimedOut
+
 # Initialize FastAPI app
 app = FastAPI(title="Order Microservice")
 
@@ -39,12 +43,10 @@ def get_db_session():
 class Order(BaseModel):
     restaurant_id: UUID
     products: Dict[UUID, int]  # Maps item_id to quantity
-    total_price: float
-    discount: Optional[float] = None
+    discount: Optional[str] = None  # Discount code
     payment_method: str
     delivery_method: str  # "delivery" or "pickup"
     address: Optional[str] = None  # Required if delivery_method is "delivery"
-    estimated_delivery_time: datetime
 
 class UpdateOrderRequest(BaseModel):
     order_id: UUID
@@ -80,6 +82,28 @@ def verify_worker(
 
     return current_user
 
+def get_lat_long(address):
+    geolocator = Nominatim(user_agent="myGeocoder", timeout=10)  # Set a timeout
+    try:
+        location = geolocator.geocode(address)
+        if location:
+            return location.latitude, location.longitude
+        else:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Could not find coordinates for the provided address: {address}",
+            )
+    except GeocoderTimedOut:
+        raise HTTPException(
+            status_code=504,
+            detail="Geocoding service timed out. Please try again later.",
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"An error occurred while processing the address: {str(e)}",
+        )
+
 @app.post("/orders")
 async def create_order(
     order: Order,
@@ -94,6 +118,79 @@ async def create_order(
     delivery_person_name = None
     delivery_person_phone = None
     restaurant_id = order.restaurant_id
+
+    restaurant_row = db.execute(
+        "SELECT latitude, longitude FROM restaurants WHERE restaurant_id = %s",
+        [restaurant_id],
+    ).one()
+
+    if not restaurant_row:
+        raise HTTPException(
+            status_code=404,
+            detail="Restaurant not found",
+        )
+
+    restaurant_coordinates = (restaurant_row.latitude, restaurant_row.longitude)
+
+    # Fetch delivery address coordinates
+    delivery_coordinates = get_lat_long(order.address)
+    if not delivery_coordinates:
+        raise HTTPException(
+            status_code=400,
+            detail="Could not retrieve coordinates for the delivery address",
+        )
+
+    # Calculate the distance between the restaurant and the delivery address
+    distance_km = geodesic(restaurant_coordinates, delivery_coordinates).km
+
+    # Check if the distance exceeds 20 km
+    if distance_km > 20:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Delivery distance of {distance_km:.2f} km exceeds the maximum allowed distance of 20 km",
+        )
+
+    # Calculate the delivery fee
+    delivery_coefficient = 2.5  # Example coefficient (you can adjust this value)
+    delivery_fee = delivery_coefficient * distance_km
+
+
+  # Fetch all item prices in a single query
+    placeholders = ','.join(['%s'] * len(order.products.keys()))
+    query = f"SELECT item_id, price FROM items WHERE restaurant_id = %s AND item_id IN ({placeholders}) ALLOW FILTERING"
+    params = [restaurant_id] + list(order.products.keys())  # Convert dict_keys to a list
+
+    rows = db.execute(query, params)
+
+
+    # Build a dictionary of item prices
+    item_prices = {row.item_id: row.price for row in rows}
+
+    # Calculate the total price
+    total_price = 0
+    for item_id, quantity in order.products.items():
+        if item_id not in item_prices:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Item with ID {item_id} not found in the specified restaurant",
+            )
+        total_price += item_prices[item_id] * quantity
+
+    # Apply discount if provided
+    if order.discount:
+        discount_row = db.execute(
+            "SELECT discount_percentage, expires_at FROM discounts WHERE discount_code = %s",
+            [order.discount],
+        ).one()
+        if not discount_row:
+            raise HTTPException(status_code=404, detail="Invalid discount code")
+        if discount_row.expires_at < datetime.utcnow():
+            raise HTTPException(status_code=400, detail="Discount code has expired")
+        discount_percentage = discount_row.discount_percentage
+        total_price -= total_price * (discount_percentage / 100)
+
+    total_price = float(total_price)
+    total_price += delivery_fee  # Add delivery fee to the total price
 
     # Retrieve delivery people from the restaurant
     restaurant_row = db.execute(
@@ -133,6 +230,8 @@ async def create_order(
         delivery_person_name = delivery_person_row.name
         delivery_person_phone = delivery_person_row.phone
 
+    estimated_delivery_time = datetime.utcnow() + timedelta(minutes=90)
+
     # Insert the order into the database
     db.execute(
         """
@@ -146,14 +245,14 @@ async def create_order(
             current_user,
             order.restaurant_id,
             order.products,
-            order.total_price,
+            total_price,
             order.discount,
             order.payment_method,
             order.delivery_method,
             order.address,
             "Pending",
             datetime.utcnow(),
-            order.estimated_delivery_time,
+            estimated_delivery_time,
             delivery_person,
             delivery_person_name,
             delivery_person_phone,
@@ -161,6 +260,7 @@ async def create_order(
     )
     return {"message": "Order created successfully", "order_id": str(order_id)}
 
+#TODO need to make checks for everything in this function
 @app.put("/orders")
 async def update_order(
     data: UpdateOrderRequest,
@@ -168,7 +268,7 @@ async def update_order(
     db=Depends(get_db_session),
 ):
     order_row = db.execute(
-        "SELECT * FROM orders WHERE order_id = %s AND customer_id = %s",
+        "SELECT * FROM orders WHERE order_id = %s AND customer_id = %s ALLOW FILTERING",
         [data.order_id, current_user],
     ).one()
 
@@ -208,7 +308,7 @@ async def cancel_order(
     db=Depends(get_db_session),
 ):
     order_row = db.execute(
-        "SELECT * FROM orders WHERE order_id = %s AND customer_id = %s",
+        "SELECT * FROM orders WHERE order_id = %s AND customer_id = %s ALLOW FILTERING",
         [data.order_id, current_user],
     ).one()
 
@@ -223,12 +323,38 @@ async def cancel_order(
     db.execute("DELETE FROM orders WHERE order_id = %s", [data.order_id])
     return {"message": "Order canceled successfully"}
 
+
+#TODO need to make checks if the worker is working in the resuaurant
 @app.put("/orders/status")
 async def update_order_status(
     data: UpdateOrderStatusRequest,
     worker: UUID = Depends(verify_worker),
     db=Depends(get_db_session),
 ):
+    if data.status not in ["Pending", "In Progress", "Delivered", "Canceled"]:
+        raise HTTPException(
+            status_code=400, detail="Invalid status. Allowed values are: Pending, In Progress, Delivered, Canceled"
+        )
+    
+    if data.status == "Delivered":
+        order_row = db.execute(
+            "SELECT * FROM orders WHERE order_id = %s ALLOW FILTERING",
+            [data.order_id],
+        ).one()
+
+        if not order_row:
+            raise HTTPException(status_code=404, detail="Order not found")
+
+        if order_row.status == "Delivered":
+            raise HTTPException(status_code=400, detail="Order is already marked as Delivered")
+
+        delivered_at = datetime.utcnow()
+        db.execute(
+            "UPDATE orders SET delivery_time = %s WHERE order_id = %s",
+            [delivered_at, data.order_id],
+        )
+
+
     db.execute(
         "UPDATE orders SET status = %s WHERE order_id = %s",
         [data.status, data.order_id],
@@ -237,28 +363,28 @@ async def update_order_status(
 
 
 
-@app.post("/discounts")
-async def add_discounts(
-    data: AddDiscountRequest,
-    worker: UUID = Depends(verify_worker),
-    db=Depends(get_db_session),
-):
-    for discount in data.discounts:
-        discount_id = uuid4()
-        db.execute(
-            """
-            INSERT INTO discounts (discount_id, discount_code, discount_percentage, created_at, expires_at)
-            VALUES (%s, %s, %s, %s, %s)
-            """,
-            (
-                discount_id,
-                discount.discount_code,
-                discount.discount_percentage,
-                datetime.utcnow(),
-                discount.expires_at,
-            ),
-        )
-    return {"message": "Discounts added successfully"}
+# @app.post("/discounts")
+# async def add_discounts(
+#     data: AddDiscountRequest,
+#     worker: UUID = Depends(verify_worker),
+#     db=Depends(get_db_session),
+# ):
+#     for discount in data.discounts:
+#         discount_id = uuid4()
+#         db.execute(
+#             """
+#             INSERT INTO discounts (discount_id, discount_code, discount_percentage, created_at, expires_at)
+#             VALUES (%s, %s, %s, %s, %s)
+#             """,
+#             (
+#                 discount_id,
+#                 discount.discount_code,
+#                 discount.discount_percentage,
+#                 datetime.utcnow(),
+#                 discount.expires_at,
+#             ),
+#         )
+#     return {"message": "Discounts added successfully"}
 
 
 if __name__ == "__main__":

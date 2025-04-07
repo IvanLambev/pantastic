@@ -1139,45 +1139,174 @@
 			]
 		},
 		{
-			"name": "http://127.0.0.1:8003/orders",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
+			"name": "orders_2",
+			"item": [
+				{
+					"name": "http://127.0.0.1:8003/orders",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ZTJiZWNhMS0wYTMwLTQ5YTItOTA0Yi1iZmFmYzU4MzI4ZGEiLCJleHAiOjE3NDQwMzA4NjJ9.dvBnZ2WjYDASR07pstAEICrFi9BD_AC-gKi3gcZEgVA"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"restaurant_id\": \"4d555898-fd6e-459f-9350-4a508f3fd07b\",\n    \"products\": {\n        \"0ca75506-c448-4ea0-9540-ca0ff57b2705\": 2,\n        \"41b45682-cd15-40dd-8def-f7770c3b7579\": 1\n    },\n    \"payment_method\": \"credit_card\",\n    \"delivery_method\": \"delivery\",\n    \"address\": \"ул. Петрушин Мадов, 2210 Драгоман\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8003/orders",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8003",
+							"path": [
+								"orders"
+							]
+						},
+						"description": "Generated from cURL: curl -X POST \"http://127.0.0.1:8000/orders\" \\\n-H \"Content-Type: application/json\" \\\n-H \"Authorization: Bearer <your_token>\" \\\n-d '{\n    \"restaurant_id\": \"ac3aa580-a30d-49aa-8707-30c4006ab38a\",\n    \"products\": {\n        \"34055fe2-3b5d-4dcb-8e2d-984954ab56ba\": 2,\n        \"123e4567-e89b-12d3-a456-426614174000\": 1\n    },\n    \"total_price\": 25.50,\n    \"payment_method\": \"credit_card\",\n    \"delivery_method\": \"delivery\",\n    \"address\": \"123 Main Street\",\n    \"estimated_delivery_time\": \"2025-04-01T15:30:00\"\n}'"
 					},
-					{
-						"key": "Authorization",
-						"value": "Bearer <your_token>"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"restaurant_id\": \"ac3aa580-a30d-49aa-8707-30c4006ab38a\",\n    \"products\": {\n        \"34055fe2-3b5d-4dcb-8e2d-984954ab56ba\": 2,\n        \"123e4567-e89b-12d3-a456-426614174000\": 1\n    },\n    \"total_price\": 25.50,\n    \"payment_method\": \"credit_card\",\n    \"delivery_method\": \"delivery\",\n    \"address\": \"123 Main Street\",\n    \"estimated_delivery_time\": \"2025-04-01T15:30:00\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					"response": []
 				},
-				"url": {
-					"raw": "http://127.0.0.1:8000/orders",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"orders"
-					]
+				{
+					"name": "http://127.0.0.1:8003/orders",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer <your_token>"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"order_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"products\": {\n        \"34055fe2-3b5d-4dcb-8e2d-984954ab56ba\": 2,\n        \"123e4567-e89b-12d3-a456-426614174001\": 1\n    },\n    \"delivery_method\": \"pickup\",\n    \"address\": \"123 Main Street, Springfield\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8003/orders",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8003",
+							"path": [
+								"orders"
+							]
+						},
+						"description": "Generated from cURL: curl -X PUT \"http://127.0.0.1:8003/orders\" \\\n-H \"Content-Type: application/json\" \\\n-H \"Authorization: Bearer <your_token>\" \\\n-d '{\n    \"order_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"products\": {\n        \"34055fe2-3b5d-4dcb-8e2d-984954ab56ba\": 2,\n        \"123e4567-e89b-12d3-a456-426614174001\": 1\n    },\n    \"delivery_method\": \"pickup\",\n    \"address\": \"123 Main Street, Springfield\"\n}'"
+					},
+					"response": []
 				},
-				"description": "Generated from cURL: curl -X POST \"http://127.0.0.1:8000/orders\" \\\n-H \"Content-Type: application/json\" \\\n-H \"Authorization: Bearer <your_token>\" \\\n-d '{\n    \"restaurant_id\": \"ac3aa580-a30d-49aa-8707-30c4006ab38a\",\n    \"products\": {\n        \"34055fe2-3b5d-4dcb-8e2d-984954ab56ba\": 2,\n        \"123e4567-e89b-12d3-a456-426614174000\": 1\n    },\n    \"total_price\": 25.50,\n    \"payment_method\": \"credit_card\",\n    \"delivery_method\": \"delivery\",\n    \"address\": \"123 Main Street\",\n    \"estimated_delivery_time\": \"2025-04-01T15:30:00\"\n}'"
-			},
-			"response": []
+				{
+					"name": "http://127.0.0.1:8003/orders",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer <your_token>"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"order_id\": \"123e4567-e89b-12d3-a456-426614174000\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8003/orders",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8003",
+							"path": [
+								"orders"
+							]
+						},
+						"description": "Generated from cURL: curl -X DELETE \"http://127.0.0.1:8003/orders\" \\\n-H \"Content-Type: application/json\" \\\n-H \"Authorization: Bearer <your_token>\" \\\n-d '{\n    \"order_id\": \"123e4567-e89b-12d3-a456-426614174000\"\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "http://127.0.0.1:8003/orders/status",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer <your_worker_token>"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"order_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"status\": \"Delivered\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8003/orders/status",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8003",
+							"path": [
+								"orders",
+								"status"
+							]
+						},
+						"description": "Generated from cURL: curl -X PUT \"http://127.0.0.1:8003/orders/status\" \\\n-H \"Content-Type: application/json\" \\\n-H \"Authorization: Bearer <your_worker_token>\" \\\n-d '{\n    \"order_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"status\": \"Delivered\"\n}'"
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
