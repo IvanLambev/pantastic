@@ -7,6 +7,7 @@ from uuid import UUID, uuid4
 from cassandra.cluster import Cluster
 import jwt
 from passlib.context import CryptContext
+from fastapi.middleware.cors import CORSMiddleware
 
 # Initialize FastAPI app
 app = FastAPI(title="User Microservice")
@@ -17,6 +18,15 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 SECRET_KEY = "your-secret-key"  # Move to environment variable
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=["http://localhost:5173"],  # Your frontend URL
+#     allow_credentials=True,
+#     allow_methods=["*"],  # Allow all methods
+#     allow_headers=["*"],  # Allow all headers
+#     expose_headers=["*"]  # Add this to expose custom headers
+# )
 
 
 # Database connection
