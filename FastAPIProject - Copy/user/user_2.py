@@ -177,7 +177,7 @@ async def login(user_credentials: UserLogin):
 
     # Find user by plain email
     result = session.execute(
-        "SELECT customer_id, password FROM customers WHERE email = %s",
+        "SELECT customer_id, password FROM customers WHERE email = %s ALLOW FILTERING",
         [user_credentials.email]
     ).one()
 
