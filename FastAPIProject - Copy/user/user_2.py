@@ -138,8 +138,7 @@ async def register(user: UserCreate):
     session = get_db_session()
 
     # Check if email exists (now using plain email)
-    result = session.execute("SELECT email FROM customers WHERE email = %s ALLOW FILTERING",
-                             [user.email])
+    result = session.execute("SELECT email FROM customers WHERE email = %s ALLOW FILTERING", [user.email])
 
     if result.one():
         raise HTTPException(status_code=400, detail="Email already registered")
