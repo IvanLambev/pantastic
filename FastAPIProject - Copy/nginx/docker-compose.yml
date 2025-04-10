@@ -1,5 +1,7 @@
 services:
   nginx:
+    networks:
+      - app_network
     image: nginx:latest
     container_name: nginx_gateway
     ports:
@@ -17,9 +19,11 @@ services:
       dockerfile: Dockerfile
     container_name: user_service
     environment:
-      - CASSANDRA_HOST=host.docker.internal # Use the host's IP for Cassandra
+      - CASSANDRA_HOST=cassandra # Use the host's IP for Cassandra
     ports:
       - "8000:8000"
+    networks:
+      - app_network
 
   restaurant_service:
     build:
@@ -27,9 +31,11 @@ services:
       dockerfile: Dockerfile
     container_name: restaurant_service
     environment:
-      - CASSANDRA_HOST=host.docker.internal # Use the host's IP for Cassandra
+      - CASSANDRA_HOST=cassandra # Use the host's IP for Cassandra
     ports:
       - "8002:8002"
+    networks:
+      - app_network
 
   order_service:
     build:
@@ -37,6 +43,8 @@ services:
       dockerfile: Dockerfile
     container_name: order_service
     environment:
-      - CASSANDRA_HOST=host.docker.internal # Use the host's IP for Cassandra
+      - CASSANDRA_HOST=cassandra # Use the host's IP for Cassandra
     ports:
       - "8003:8003"
+    networks:
+      - app_network

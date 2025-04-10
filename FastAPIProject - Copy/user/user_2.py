@@ -8,6 +8,10 @@ from cassandra.cluster import Cluster
 import jwt
 from passlib.context import CryptContext
 from fastapi.middleware.cors import CORSMiddleware
+from cassandra.cluster import Cluster
+from cassandra import ConsistencyLevel
+from cassandra.policies import RetryPolicy
+import time
 
 # Initialize FastAPI app
 app = FastAPI(title="User Microservice")
@@ -34,13 +38,44 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 #     cluster = Cluster(['host.docker.internal'], protocol_version=4)
 #     session = cluster.connect('pantastic')
 #     return session
+# def get_db_session():
+#     import os
+#     # Get the Cassandra host from the environment variable
+#     cassandra_host = os.getenv("CASSANDRA_HOST", "127.0.0.1")  # Default to localhost if not set
+#     cluster = Cluster([cassandra_host], protocol_version=4)
+#     session = cluster.connect('pantastic')  # Replace 'pantastic' with your keyspace name
+#     return session
+
 def get_db_session():
     import os
-    # Get the Cassandra host from the environment variable
-    cassandra_host = os.getenv("CASSANDRA_HOST", "127.0.0.1")  # Default to localhost if not set
-    cluster = Cluster([cassandra_host], protocol_version=4)
-    session = cluster.connect('pantastic')  # Replace 'pantastic' with your keyspace name
-    return session
+    max_retries = 5
+    retry_delay = 5  # seconds
+    
+    for attempt in range(max_retries):
+        try:
+            # Get the Cassandra host from environment variable
+            cassandra_host = os.getenv("CASSANDRA_HOST", "cassandra")
+            
+            # Configure the cluster with retry policy
+            cluster = Cluster(
+                [cassandra_host],
+                protocol_version=4,
+                port=9042,
+                connect_timeout=10
+            )
+            
+            session = cluster.connect()
+                        
+            
+            # Connect to the keyspace
+            session = cluster.connect('pantastic')
+            return session
+            
+        except Exception as e:
+            if attempt == max_retries - 1:  # Last attempt
+                raise Exception(f"Could not connect to Cassandra after {max_retries} attempts: {str(e)}")
+            print(f"Failed to connect to Cassandra (attempt {attempt + 1}/{max_retries}). Retrying in {retry_delay} seconds...")
+            time.sleep(retry_delay)
 
 
 # Models (keep the same)
