@@ -1,7 +1,7 @@
+version: "3.8"
+
 services:
   nginx:
-    networks:
-      - app_network
     image: nginx:latest
     container_name: nginx_gateway
     ports:
@@ -12,15 +12,16 @@ services:
       - user_service
       - restaurant_service
       - order_service
+    networks:
+      - app_network
 
-   cassandra-db:
+  cassandra-db:
     image: cassandra:latest
     container_name: cassandra-db
     ports:
       - "9042:9042"
     networks:
       - app_network
-    
 
   user_service:
     build:
@@ -28,7 +29,7 @@ services:
       dockerfile: Dockerfile
     container_name: user_service
     environment:
-      - CASSANDRA_HOST=cassandra # Use the host's IP for Cassandra
+      - CASSANDRA_HOST=cassandra-db
     ports:
       - "8000:8000"
     networks:
@@ -40,7 +41,7 @@ services:
       dockerfile: Dockerfile
     container_name: restaurant_service
     environment:
-      - CASSANDRA_HOST=cassandra # Use the host's IP for Cassandra
+      - CASSANDRA_HOST=cassandra-db
     ports:
       - "8002:8002"
     networks:
@@ -52,8 +53,12 @@ services:
       dockerfile: Dockerfile
     container_name: order_service
     environment:
-      - CASSANDRA_HOST=cassandra # Use the host's IP for Cassandra
+      - CASSANDRA_HOST=cassandra-db
     ports:
       - "8003:8003"
     networks:
       - app_network
+
+networks:
+  app_network:
+    driver: bridge
