@@ -297,7 +297,7 @@ async def add_items(
 #     ).all()
 #     return rows
 
-@app.get("/restaurants/items{restaurant_id}")
+@app.get("/restaurants/{restaurant_id}/items")
 async def get_items(
     restaurant_id: UUID,  # This will be parsed from the URL path
     db=Depends(get_db_session),
