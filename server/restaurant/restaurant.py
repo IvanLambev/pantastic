@@ -143,7 +143,7 @@ async def add_restaurant(restaurant: Restaurant, user: User = Depends(verify_adm
     return {"message": "Restaurant added successfully", "restaurant_id": str(restaurant_id)}
 
 @app.get("/restaurants")
-async def get_restaurants(user: User = Depends(verify_admin), db=Depends(get_db_session)):
+async def get_restaurants(db=Depends(get_db_session)):
     rows = db.execute("SELECT * FROM restaurants").all()
     return rows
 
@@ -289,7 +289,6 @@ async def add_items(
 @app.get("/items")
 async def get_items(
     data: GetItemsRequest,  # Use a Pydantic model to parse the request body
-    user: User = Depends(verify_admin),
     db=Depends(get_db_session),
 ):
     restaurant_id = data.restaurant_id
