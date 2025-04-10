@@ -7,3 +7,8 @@ chmod +x init-cassandra.sh
 
 docker cp createdb.sh cassandra-db:/createdb.sh
 docker exec -it cassandra-db bash /createdb.sh
+
+
+UPDATE pantastic.customers
+SET admin = 1 
+WHERE customer_id = 38a9a878-0e06-4382-9cd9-7307f6683eee; 

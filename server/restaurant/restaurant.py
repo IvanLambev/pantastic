@@ -286,12 +286,22 @@ async def add_items(
         )
     return {"message": "Items added successfully"}
 
-@app.get("/items")
+# @app.get("/items")
+# async def get_items(
+#     data: GetItemsRequest,  # Use a Pydantic model to parse the request body
+#     db=Depends(get_db_session),
+# ):
+#     restaurant_id = data.restaurant_id
+#     rows = db.execute(
+#         "SELECT * FROM items WHERE restaurant_id = %s ALLOW FILTERING", [restaurant_id]
+#     ).all()
+#     return rows
+
+@app.get("/restaurants/items/{restaurant_id}")
 async def get_items(
-    data: GetItemsRequest,  # Use a Pydantic model to parse the request body
+    restaurant_id: UUID,  # This will be parsed from the URL path
     db=Depends(get_db_session),
 ):
-    restaurant_id = data.restaurant_id
     rows = db.execute(
         "SELECT * FROM items WHERE restaurant_id = %s ALLOW FILTERING", [restaurant_id]
     ).all()
