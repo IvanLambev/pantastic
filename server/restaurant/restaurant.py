@@ -4,7 +4,7 @@ from uuid import UUID
 from uuid import uuid4
 
 from cassandra.cluster import Cluster
-from fastapi import FastAPI, HTTPException, Depends, status, UploadFile, File
+from fastapi import FastAPI, HTTPException, Depends, status, UploadFile, File, Form
 from fastapi.security import OAuth2PasswordBearer
 
 from passlib.context import CryptContext
