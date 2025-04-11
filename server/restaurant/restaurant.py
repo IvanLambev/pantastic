@@ -15,6 +15,7 @@ from typing import Dict, List
 import httpx
 import boto3
 import io
+import json
 
 from geopy.geocoders import Nominatim
 
@@ -273,13 +274,22 @@ async def unassign_delivery_person(
 
 @app.post("/items")
 async def add_items(
-    data: AddItemsRequest,  # Use a Pydantic model to parse the request body
+    data: str = Form(...),  # Accept `data` as a string from the form
     user: User = Depends(verify_admin),
     db=Depends(get_db_session),
     file: UploadFile = File(...),
 ):
-    restaurant_id = data.restaurant_id
-    items = data.items
+    # Parse the `data` field as JSON
+    try:
+        data = json.loads(data)
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=400, detail="Invalid JSON in 'data' field")
+
+    # Validate the parsed data against the Pydantic model
+    add_items_request = AddItemsRequest(**data)
+
+    restaurant_id = add_items_request.restaurant_id
+    items = add_items_request.items
 
     for item in items:
         item_id = item.item_id or uuid4()  # Generate a new UUID if not provided
