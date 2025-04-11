@@ -42,6 +42,9 @@ services:
     container_name: restaurant_service
     environment:
       - CASSANDRA_HOST=cassandra-db
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
     ports:
       - "8002:8002"
     networks:
