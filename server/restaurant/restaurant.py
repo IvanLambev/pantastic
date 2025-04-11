@@ -4,7 +4,7 @@ from uuid import UUID
 from uuid import uuid4
 
 from cassandra.cluster import Cluster
-from fastapi import FastAPI, HTTPException, Depends, status
+from fastapi import FastAPI, HTTPException, Depends, status, UploadFile, File
 from fastapi.security import OAuth2PasswordBearer
 
 from passlib.context import CryptContext
@@ -13,6 +13,8 @@ from cassandra.cluster import Session
 from fastapi import Depends
 from typing import Dict, List
 import httpx
+import boto3
+import io
 
 from geopy.geocoders import Nominatim
 
@@ -131,6 +133,9 @@ def get_coordinates(address):
         #return location.latitude, location.longitude
     return None
 
+# Initialize S3 client
+s3 = boto3.client("s3")
+BUCKET_NAME = "pantastic-images"
 
 @app.post("/restaurants")
 async def add_restaurant(restaurant: Restaurant, user: User = Depends(verify_admin), db=Depends(get_db_session)):
@@ -271,31 +276,39 @@ async def add_items(
     data: AddItemsRequest,  # Use a Pydantic model to parse the request body
     user: User = Depends(verify_admin),
     db=Depends(get_db_session),
+    file: UploadFile = File(...),
 ):
     restaurant_id = data.restaurant_id
     items = data.items
 
     for item in items:
         item_id = item.item_id or uuid4()  # Generate a new UUID if not provided
+
+        # Upload image to S3
+        contents = await file.read()
+        file_like_object = io.BytesIO(contents)
+        s3.upload_fileobj(
+            Fileobj=file_like_object,
+            Bucket=BUCKET_NAME,
+            Key=f"menu-items/{item_id}.jpg",
+        )
+
         db.execute(
             """
-            INSERT INTO items (item_id, restaurant_id, name, description, price, created_at)
-            VALUES (%s, %s, %s, %s, %s, %s)
+            INSERT INTO items (item_id, restaurant_id, name, description, price, created_at, image_url)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
             """,
-            (item_id, restaurant_id, item.name, item.description, item.price, datetime.utcnow()),
+            (
+                item_id,
+                restaurant_id,
+                item.name,
+                item.description,
+                item.price,
+                datetime.utcnow(),
+                f"https://{BUCKET_NAME}.s3.amazonaws.com/menu-items/{item_id}.jpg",
+            ),
         )
     return {"message": "Items added successfully"}
-
-# @app.get("/items")
-# async def get_items(
-#     data: GetItemsRequest,  # Use a Pydantic model to parse the request body
-#     db=Depends(get_db_session),
-# ):
-#     restaurant_id = data.restaurant_id
-#     rows = db.execute(
-#         "SELECT * FROM items WHERE restaurant_id = %s ALLOW FILTERING", [restaurant_id]
-#     ).all()
-#     return rows
 
 @app.get("/{restaurant_id}/items")
 async def get_items(
@@ -312,6 +325,7 @@ async def update_item(
     data: UpdateItemRequest,  # Use a Pydantic model to parse the request body
     user: User = Depends(verify_admin),
     db=Depends(get_db_session),
+    file: Optional[UploadFile] = None,
 ):
     item_id = data.item_id
     updates = []
@@ -326,6 +340,18 @@ async def update_item(
     if data.price:
         updates.append("price = %s")
         params.append(data.price)
+
+    if file:
+        # Upload new image to S3
+        contents = await file.read()
+        file_like_object = io.BytesIO(contents)
+        s3.upload_fileobj(
+            Fileobj=file_like_object,
+            Bucket=BUCKET_NAME,
+            Key=f"menu-items/{item_id}.jpg",
+        )
+        updates.append("image_url = %s")
+        params.append(f"https://{BUCKET_NAME}.s3.amazonaws.com/menu-items/{item_id}.jpg")
 
     if not updates:
         raise HTTPException(status_code=400, detail="No fields to update")
@@ -342,6 +368,10 @@ async def delete_item(
     db=Depends(get_db_session),
 ):
     item_id = data.item_id
+
+    # Delete image from S3
+    s3.delete_object(Bucket=BUCKET_NAME, Key=f"menu-items/{item_id}.jpg")
+
     db.execute("DELETE FROM items WHERE item_id = %s", [item_id])
     return {"message": "Item deleted successfully"}
 
