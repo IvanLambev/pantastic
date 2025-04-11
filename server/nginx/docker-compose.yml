@@ -40,6 +40,8 @@ services:
       context: ../restaurant
       dockerfile: Dockerfile
     container_name: restaurant_service
+    volumes:
+      - ~/.aws:/root/.aws:ro
     environment:
       - CASSANDRA_HOST=cassandra-db
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
